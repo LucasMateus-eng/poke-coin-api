@@ -105,6 +105,18 @@ exports.makeDeposit = async (req, res) => {
     const { amount } = req.body;
     const { userId } = req;
 
+    if (amount === 0) {
+      return res.status(422).send({ message: 'O depósito não pode ser igual a 0.' });
+    }
+
+    if (amount < 0) {
+      return res.status(422).send({ message: 'O depósito não pode ser negativo.' });
+    }
+
+    if (!isFinite(amount)) {
+      return res.status(422).send({ message: 'O depósito deve ser um dado numérico.' });
+    }
+
     const user = await User.findById(userId, "-password");
 
     const statementOperation = {
@@ -135,6 +147,14 @@ exports.makeAcquisition = async (req, res) => {
 
     if (quantity === 0) {
       return res.status(422).send({ message: 'A quantidade do ativo não pode ser 0.' });
+    }
+
+    if (quantity < 0) {
+      return res.status(422).send({ message: 'A quantidade não pode ser negativa.' });
+    }
+
+    if (!isFinite(quantity)) {
+      return res.status(422).send({ message: 'A quantidade deve ser um dado numérico.' });
     }
 
     const balance = consultBalance(user.statement);
@@ -192,6 +212,14 @@ exports.makeASale = async (req, res) => {
 
     if (quantity === 0) {
       return res.status(422).send({ message: 'A quantidade do ativo não pode ser 0.' });
+    }
+
+    if (quantity < 0) {
+      return res.status(422).send({ message: 'A quantidade não pode ser negativa.' });
+    }
+
+    if (!isFinite(quantity)) {
+      return res.status(422).send({ message: 'A quantidade deve ser um dado numérico.' });
     }
 
     const verifyIfExistsAsset = user.wallet.find((asset) => asset.name === name);
