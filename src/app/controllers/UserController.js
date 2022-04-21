@@ -113,7 +113,7 @@ exports.makeDeposit = async (req, res) => {
       return res.status(422).send({ message: 'O depósito não pode ser negativo.' });
     }
 
-    if (!isFinite(amount)) {
+    if (typeof amount === 'string') {
       return res.status(422).send({ message: 'O depósito deve ser um dado numérico.' });
     }
 
@@ -153,7 +153,7 @@ exports.makeAcquisition = async (req, res) => {
       return res.status(422).send({ message: 'A quantidade não pode ser negativa.' });
     }
 
-    if (!isFinite(quantity)) {
+    if (typeof quantity === 'string') {
       return res.status(422).send({ message: 'A quantidade deve ser um dado numérico.' });
     }
 
@@ -218,7 +218,7 @@ exports.makeASale = async (req, res) => {
       return res.status(422).send({ message: 'A quantidade não pode ser negativa.' });
     }
 
-    if (!isFinite(quantity)) {
+    if (typeof quantity === 'string') {
       return res.status(422).send({ message: 'A quantidade deve ser um dado numérico.' });
     }
 
