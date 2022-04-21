@@ -9,19 +9,19 @@ exports.createUser = async (req, res) => {
   const { name, cpf, email, password } = req.body;
 
   if (!name) {
-    return res.status(422).send({ error: "O nome é obrigatório!" });
+    return res.status(422).send({ message: "O nome é obrigatório!" });
   }
 
   if (!cpf) {
-    return res.status(422).send({ error: "O cpf é obrigatório!" });
+    return res.status(422).send({ message: "O cpf é obrigatório!" });
   }
 
   if (!email) {
-    return res.status(422).send({ error: "O e-mail é obrigatório!" });
+    return res.status(422).send({ message: "O e-mail é obrigatório!" });
   }
 
   if (!password) {
-    return res.status(422).send({ error: "A senha é obrigatória!" });
+    return res.status(422).send({ message: "A senha é obrigatória!" });
   };
 
   const salt = await bcrypt.genSalt(12);
@@ -41,7 +41,7 @@ exports.createUser = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Erro ao cadastrar usuário. Tente novamente mais tarde.' });
+    res.status(500).send({ message: 'Erro ao cadastrar usuário. Tente novamente mais tarde.' });
   }
 }
 
@@ -82,7 +82,7 @@ exports.loginUser = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: "Erro ao fazer login. Tente novamente mais tarde." });
+    res.status(500).send({ message: "Erro ao fazer login. Tente novamente mais tarde." });
   }
 }
 
@@ -96,7 +96,7 @@ exports.getUser = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao acessar usuário.' });
+    res.status(500).send({ message: 'Falha ao acessar usuário.' });
   }
 }
 
@@ -122,7 +122,7 @@ exports.makeDeposit = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao processar depósito.' });
+    res.status(500).send({ message: 'Falha ao processar depósito.' });
   }
 }
 
@@ -134,13 +134,13 @@ exports.makeAcquisition = async (req, res) => {
     const user = await User.findById(userId, "-password");
 
     if (quantity === 0) {
-      return res.status(422).send({ error: 'A quantidade do ativo não pode ser 0.' });
+      return res.status(422).send({ message: 'A quantidade do ativo não pode ser 0.' });
     }
 
     const balance = consultBalance(user.statement);
 
     if (balance < total) {
-      return res.status(422).send({ error: 'Saldo insuficiente. Faça um depósito.' });
+      return res.status(422).send({ message: 'Saldo insuficiente. Faça um depósito.' });
     };
 
     const acquisitionTransaction = {
@@ -179,7 +179,7 @@ exports.makeAcquisition = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao processar aquisição.' });
+    res.status(500).send({ message: 'Falha ao processar aquisição.' });
   }
 }
 
@@ -191,7 +191,7 @@ exports.makeASale = async (req, res) => {
     const user = await User.findById(userId, "-password");
 
     if (quantity === 0) {
-      return res.status(422).send({ error: 'A quantidade do ativo não pode ser 0.' });
+      return res.status(422).send({ message: 'A quantidade do ativo não pode ser 0.' });
     }
 
     const verifyIfExistsAsset = user.wallet.find((asset) => asset.name === name);
@@ -241,7 +241,7 @@ exports.makeASale = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao processar venda.' });
+    res.status(500).send({ message: 'Falha ao processar venda.' });
   }
 }
 
@@ -256,7 +256,7 @@ exports.getBalance = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao consultar saldo.' });
+    res.status(500).send({ message: 'Falha ao consultar saldo.' });
   }
 }
 
@@ -271,7 +271,7 @@ exports.getAllOperations = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao consultar o histórico das operações realizadas.' });
+    res.status(500).send({ message: 'Falha ao consultar o histórico das operações realizadas.' });
   }
 }
 
@@ -284,7 +284,7 @@ exports.getWallet = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao consultar a carteira.' });
+    res.status(500).send({ message: 'Falha ao consultar a carteira.' });
   }
 }
 
@@ -301,6 +301,6 @@ exports.getWalletValue = async (req, res) => {
   } catch (e) {
     console.log(e);
 
-    res.status(500).send({ error: 'Falha ao consultar o valor total da carteira em USD.' });
+    res.status(500).send({ message: 'Falha ao consultar o valor total da carteira em USD.' });
   }
 }
