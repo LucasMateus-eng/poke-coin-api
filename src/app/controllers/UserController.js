@@ -175,7 +175,7 @@ exports.makeAcquisition = async (req, res) => {
     const userWithInsertTransaction = await user.save();
     console.log(userWithInsertTransaction);
 
-    return res.status(201).send();
+    return res.status(201).send({ message: 'Operação de compra realizada com sucesso.' });
   } catch (e) {
     console.log(e);
 
@@ -237,7 +237,7 @@ exports.makeASale = async (req, res) => {
     const userWithInsertTransaction = await user.save();
     console.log(userWithInsertTransaction);
 
-    return res.status(201).send();
+    return res.status(201).send({ message: 'Operação de venda realizada com sucesso.' });
   } catch (e) {
     console.log(e);
 
