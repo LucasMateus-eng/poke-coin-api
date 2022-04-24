@@ -172,7 +172,7 @@ exports.makeAcquisition = async (req, res) => {
       state: 'purchased'
     };
 
-    const assetInWallet = user.wallet.find((asset) => asset.name === name);
+    const assetInWallet = user.wallet.find((asset) => asset.name.localeCompare(name) === 0);
 
     if (!assetInWallet) {
       user.wallet.push(acquisitionTransaction);
@@ -222,7 +222,7 @@ exports.makeASale = async (req, res) => {
       return res.status(422).send({ message: 'A quantidade deve ser um dado numérico.' });
     }
 
-    const verifyIfExistsAsset = user.wallet.find((asset) => asset.name === name);
+    const verifyIfExistsAsset = user.wallet.find((asset) => asset.name.localeCompare(name) === 0);
 
     if (!verifyIfExistsAsset) {
       return res.status(404).send({ message: 'Ativo inexistente na carteira. Faça uma compra.' });
@@ -242,13 +242,11 @@ exports.makeASale = async (req, res) => {
     };
 
     // atualizando o wallet
-    const assetInWallet = user.wallet.find((asset) => asset.name === name);
-
-    if (assetInWallet.quantity - parseInt(quantity) === 0) {
-      user.wallet.splice(assetInWallet, 1);
+    if (verifyIfExistsAsset.quantity - parseInt(quantity) === 0) {
+      user.wallet.splice(verifyIfExistsAsset, 1);
     } else {
-      assetInWallet.quantity -= parseInt(quantity);
-      assetInWallet.total -= parseFloat(total);
+      verifyIfExistsAsset.quantity -= parseInt(quantity);
+      verifyIfExistsAsset.total -= parseFloat(total);
     }
 
     //atualizando o statement
